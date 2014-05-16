@@ -17,26 +17,16 @@ class SimpleTimeSeries
 
   def define_time_methods_and_set_values
     time_vars.each do |var, vals|
-      ivar = "@#{var}"
-      self.class.class_eval do
-        define_method(var) { instance_variable_get ivar }
-        define_method "#{var}=" do |val|
-          instance_variable_set ivar, val
-        end
-      end
-      instance_variable_set(ivar, vals) if vals
+      define_getter_and_setter(var)
+      instance_variable_set("@#{var}", vals) if vals
     end
   end
 
   def define_data_methods_and_set_values
     data_vars.each do |var, vals|
-      ivar = "@#{var}"
+      define_getter_and_setter(var)
       var_on = "#{var}_on"
       self.class.class_eval do
-        define_method(var) { instance_variable_get ivar }
-        define_method "#{var}=" do |val|
-          instance_variable_set ivar, val
-        end
         define_method(var_on) do |date|
           if dates && dates.include?(date)
             eval(var)[date_to_i(date)]
@@ -47,12 +37,18 @@ class SimpleTimeSeries
           end
         end
       end
-      instance_variable_set(ivar, vals) if vals
+      instance_variable_set("@#{var}", vals) if vals
     end
   end
 
   def define_getter_and_setter(var)
-
+      ivar = "@#{var}"
+      self.class.class_eval do
+        define_method(var) { instance_variable_get ivar }
+        define_method "#{var}=" do |val|
+          instance_variable_set ivar, val
+        end
+      end
   end
 
   def dows_to_i(date)
