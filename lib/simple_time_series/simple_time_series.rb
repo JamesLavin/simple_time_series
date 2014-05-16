@@ -39,4 +39,5 @@ class SimpleTimeSeries
   def date_to_i(date)
     dates.index(date)
   end
+
 end
