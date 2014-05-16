@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = SimpleTimeSeries::VERSION
   spec.authors       = ["James Lavin"]
   spec.email         = ["james@jameslavin.com"]
-  spec.summary       = %q{Packages a set of time series variables into an object that allows easy data access and manipulation}
-  spec.description   = %q{Packages a set of time series variables into an object that allows easy data access and manipulation}
+  spec.summary       = %q{Packages a set of time series variables into an object for easy data access and manipulation}
+  spec.description   = %q{Packages a set of time series variables into an object for easy data access and manipulation}
   spec.homepage      = ""
   spec.license       = "MIT"
 
