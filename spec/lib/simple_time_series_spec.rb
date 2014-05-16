@@ -17,12 +17,20 @@ describe SimpleTimeSeries do
     @my_data.should be_a(SimpleTimeSeries)
   end
 
-  it "should look up data values for any time observation" do
+  it "should create accessor methods for looking up data values for any time observation" do
     @my_data.pizzas_on('Tuesday').should == 1
     @my_data.pizzas_on('Thursday').should == 0.5
     @my_data.miles_on('Sunday').should == 2.2
     @my_data.miles_on('2014-01-06').should == 12.2
     @my_data.tasks_done_on('2014-01-02').should == 3
+  end
+
+  it "should #find any data value for any time observation" do
+    @my_data.find('pizzas', 'Tuesday').should == 1
+    @my_data.find('pizzas', 'Thursday').should == 0.5
+    @my_data.find('miles', 'Sunday').should == 2.2
+    @my_data.find('miles', '2014-01-06').should == 12.2
+    @my_data.find('tasks_done', '2014-01-02').should == 3
   end
 
 end
