@@ -28,7 +28,7 @@ You have these stored in simple Ruby arrays (that you can name anything you want
     miles = [2.2, 3.1, 0.0, 4.3, 1.2, 12.2, 2.3]
     tasks_done = [2, 3, 0, 14, 3, 11, 0]
 
-To associate these observations with the days they belong to, you create arrays of days-of-the-week ("dows") and/or "dates". (You can put whatever time/date values in these arrays that you wish. Currently, however, only arrays named "dows" and "dates" are supported, but I will soon make it so the names you choose don't matter. Only their order in the array(s) matters.)
+To associate these observations with the days they belong to, you create ordered arrays that could hold sequential observation numbers, days-of-the-week, dates or whatever. (You can put whatever time/date values in these arrays that you wish. Only their order in the array(s) matters.) Below, we create "dows" (for days-of-the-week) and "dates," but you can make whatever ordered observation/date variables you desire:
 
     dows = ['Sunday', 'Monday', 'Tuesday', 'Wednesday',
             'Thursday', 'Friday', 'Saturday']
