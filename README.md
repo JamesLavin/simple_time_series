@@ -38,11 +38,11 @@ To associate these observations with the days they belong to, you create arrays 
 This is sufficient to package up your data into a SimpleTimeSeries object:
 
     require 'simple_time_series'
-    my_data = SimpleTimeSeries.new(time_variables = {'dows' => dows,
-                                                     'dates' => dates},
-                                   data_variables = {'pizzas' => pizzas,
-                                                     'miles' => miles,
-                                                     'tasks_done' => tasks_done})
+    my_data = SimpleTimeSeries.new(:time_vars => {'dows' => dows,
+                                                  'dates' => dates},
+                                   :data_vars => {'pizzas' => pizzas,
+                                                  'miles' => miles,
+                                                  'tasks_done' => tasks_done})
 
 You can now easily access the value of any data variable for any value of one of your time variables:
 

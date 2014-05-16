@@ -8,9 +8,11 @@ describe SimpleTimeSeries do
     @pizzas = [0, 0, 1, 0, 0.5, 0, 2]
     @miles = [2.2, 3.1, 0.0, 4.3, 1.2, 12.2, 2.3]
     @tasks_done = [2, 3, 0, 14, 3, 11, 0]
-    @my_data = SimpleTimeSeries.new(variables = {'dows' => @dows, 'dates' => @dates,
-                                                 'pizzas' => @pizzas, 'miles' => @miles,
-                                                 'tasks_done' => @tasks_done})
+    @my_data = SimpleTimeSeries.new(:data_vars =>
+                                       {'pizzas' => @pizzas, 'miles' => @miles,
+                                        'tasks_done' => @tasks_done},
+                                    :time_vars =>
+                                       {'dows' => @dows, 'dates' => @dates})
   end
 
   it "should be creatable" do
