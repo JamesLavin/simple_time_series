@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "simple_time_series"
   spec.version       = SimpleTimeSeries::VERSION
   spec.authors       = ["James Lavin"]
-  spec.email         = ["james@jameslavin.com"]
+  spec.email         = ["simple_time_series@futureresearch.com"]
   spec.summary       = %q{Packages a set of time series variables into an object for easy data access and manipulation}
   spec.description   = %q{Packages a set of time series variables into an object for easy data access and manipulation}
   spec.homepage      = ""
@@ -20,4 +20,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.5"
   spec.add_development_dependency "rake"
+  spec.add_development_dependency "rspec"
 end
