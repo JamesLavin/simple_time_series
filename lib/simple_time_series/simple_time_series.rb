@@ -28,13 +28,12 @@ class SimpleTimeSeries
       var_on = "#{var}_on"
       self.class.class_eval do
         define_method(var_on) do |date|
-          if dates && dates.include?(date)
-            eval(var)[date_index(date)]
-          elsif dows && dows.include?(date)
-            eval(var)[dows_index(date)]
-          else
-            raise "Can't find #{var_on} for #{date}"
+          time_vars.each do |tv_key, tv_val|
+            # tv_key is 'dows' or 'dates'
+            # tv_val is an array of associated values
+            return eval(var)[tv_val.index(date)] if tv_val.include?(date)
           end
+          raise "Can't find #{var_on} for #{date}"
         end
       end
       instance_variable_set("@#{var}", vals) if vals
@@ -42,13 +41,13 @@ class SimpleTimeSeries
   end
 
   def define_getter_and_setter(var)
-      ivar = "@#{var}"
-      self.class.class_eval do
-        define_method(var) { instance_variable_get ivar }
-        define_method "#{var}=" do |val|
-          instance_variable_set ivar, val
-        end
+    ivar = "@#{var}"
+    self.class.class_eval do
+      define_method(var) { instance_variable_get ivar }
+      define_method "#{var}=" do |val|
+        instance_variable_set ivar, val
       end
+    end
   end
 
   def dows_index(date)

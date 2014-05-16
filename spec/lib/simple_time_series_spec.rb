@@ -19,6 +19,17 @@ describe SimpleTimeSeries do
     @my_data.should be_a(SimpleTimeSeries)
   end
 
+  it "should set #time_vars correctly" do
+    @my_data.time_vars["dates"].should == @dates
+    @my_data.time_vars["dows"].should == @dows
+  end
+
+  it "should have the correct methods" do
+    [:time_vars, :time_vars=, :data_vars, :data_vars=, :find, :pizzas, :pizzas=, :pizzas_on, :miles, :miles=, :miles_on, :tasks_done, :tasks_done=, :tasks_done_on, :dows, :dows=, :dates, :dates=].each do |mthd|
+      @my_data.methods.should include(mthd)
+    end
+  end
+
   it "should create accessor methods for looking up data values for any time observation" do
     @my_data.pizzas_on('Tuesday').should == 1
     @my_data.pizzas_on('Thursday').should == 0.5
