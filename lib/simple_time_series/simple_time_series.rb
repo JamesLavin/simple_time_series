@@ -29,9 +29,9 @@ class SimpleTimeSeries
       self.class.class_eval do
         define_method(var_on) do |date|
           if dates && dates.include?(date)
-            eval(var)[date_to_i(date)]
+            eval(var)[date_index(date)]
           elsif dows && dows.include?(date)
-            eval(var)[dows_to_i(date)]
+            eval(var)[dows_index(date)]
           else
             raise "Can't find #{var_on} for #{date}"
           end
@@ -51,11 +51,11 @@ class SimpleTimeSeries
       end
   end
 
-  def dows_to_i(date)
+  def dows_index(date)
     dows.index(date)
   end
 
-  def date_to_i(date)
+  def date_index(date)
     dates.index(date)
   end
 
