@@ -64,3 +64,7 @@ This began as a simple code example for a collague who needed to do something si
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## Acknowledgements
+
+Thanks to my employer, Hedgeye, for letting me create and publish this.
