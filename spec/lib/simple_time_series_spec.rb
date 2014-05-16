@@ -33,4 +33,12 @@ describe SimpleTimeSeries do
     @my_data.find('tasks_done', '2014-01-02').should == 3
   end
 
+  it "should create setter methods for updating a data series" do
+    @my_data.pizzas = [10, 11, 12, 13, 14, 15, 16]
+    @my_data.pizzas_on('Tuesday').should == 12
+    @my_data.pizzas_on('Thursday').should == 14
+    @my_data.pizzas_on('2014-01-04').should == 13
+    @my_data.pizzas_on('2014-01-07').should == 16
+  end
+
 end
