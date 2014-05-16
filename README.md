@@ -30,14 +30,18 @@ You have these stored in simple Ruby arrays (that you can name anything you want
 
 To associate these observations with the days they belong to, you create arrays of days-of-the-week ("dows") and/or "dates". (You can put whatever time/date values in these arrays that you wish. Currently, however, only arrays named "dows" and "dates" are supported, but I will soon make it so the names you choose don't matter. Only their order in the array(s) matters.)
 
-    dows = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-    dates = ['2014-01-01', '2014-01-02', '2014-01-03', '2014-01-04', '2014-01-05', '2014-01-06', '2014-01-07']
+    dows = ['Sunday', 'Monday', 'Tuesday', 'Wednesday',
+            'Thursday', 'Friday', 'Saturday']
+    dates = ['2014-01-01', '2014-01-02', '2014-01-03',
+             '2014-01-04', '2014-01-05', '2014-01-06', '2014-01-07']
 
 This is sufficient to package up your data into a SimpleTimeSeries object:
 
     require 'simple_time_series'
-    my_data = SimpleTimeSeries.new(time_variables = {'dows' => dows, 'dates' => dates},
-                                   data_variables = {'pizzas' => pizzas, 'miles' => miles,
+    my_data = SimpleTimeSeries.new(time_variables = {'dows' => dows,
+                                                     'dates' => dates},
+                                   data_variables = {'pizzas' => pizzas,
+                                                     'miles' => miles,
                                                      'tasks_done' => tasks_done})
 
 You can now easily access the value of any data variable for any value of one of your time variables:
