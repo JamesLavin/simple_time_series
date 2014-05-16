@@ -29,7 +29,7 @@ class SimpleTimeSeries
       self.class.class_eval do
         define_method(var_on) do |date|
           time_vars.each do |tv_key, tv_val|
-            # tv_key is 'dows' or 'dates'
+            # tv_key is something like 'dows' or 'dates'
             # tv_val is an array of associated values
             return eval(var)[tv_val.index(date)] if tv_val.include?(date)
           end
@@ -48,14 +48,6 @@ class SimpleTimeSeries
         instance_variable_set ivar, val
       end
     end
-  end
-
-  def dows_index(date)
-    dows.index(date)
-  end
-
-  def date_index(date)
-    dates.index(date)
   end
 
 end
