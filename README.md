@@ -64,6 +64,11 @@ You can get the same values by calling SimpleTimeSeries#find with two arguments,
     puts "Tasks done on Wednesday: #{my_data.find('tasks_done', 'Wednesday')}" # prints 14
     puts "Tasks done on 2014-01-05: #{my_data.find('tasks_done', '2014-01-05')}" # prints 3
 
+You can change the values associated with any data variable by setting the value to a different array:
+
+    my_data.pizzas = [4, 6, 3, 2, 3.5, 7, 2]
+    puts "Pizzas eaten on Tuesday: #{my_data.pizzas_on('Tuesday')}" # prints 3
+
 Currently, SimpleTimeSeries assumes all variable arrays have equal lengths and represent the same sequence of observations. Though the gem says "time series," it should work with any kind of sequential data.
 
 ## Disclaimer
