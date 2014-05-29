@@ -94,6 +94,25 @@ A second example of #set:
   puts my_data.tasks_done_on('2014-01-07') # prints 77
   puts my_data.tasks_done_on('Jan 7, 2014') # prints 77
 
+You can use #set to build up a data variable from an empty array. Begin by assigning an empty array to a data_var:
+
+    my_data2 = SimpleTimeSeries.new(:time_vars => {'dows' => dows,
+                                                  'dates' => dates,
+                                                  'full_dates' => full_dates},
+                                    :data_vars => {'empty' => []}
+
+You can then set individual values using #set till you've filled in all values:
+
+    my_data2.set('empty', 'Jan 1, 2014', 1)
+    my_data2.set('empty', 'Monday', 2)
+    my_data2.set('empty', '2014-01-03', 3)
+    my_data2.set('empty', 'Jan 4, 2014', 4)
+    my_data2.set('empty', 'Thursday', 5)
+    my_data2.set('empty', '2014-01-06', 6)
+    my_data2.set('empty', 'Jan 7, 2014', 7)
+
+my_data2.empty now equals [1, 2, 3, 4, 5, 6, 7]
+
 Currently, SimpleTimeSeries assumes all variable arrays have equal lengths and represent the same sequence of observations. Though the gem says "time series," it should work with any kind of sequential data.
 
 ## Disclaimer

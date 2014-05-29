@@ -11,7 +11,7 @@ describe SimpleTimeSeries do
     @tasks_done = [2, 3, 0, 14, 3, 11, 0]
     @my_data = SimpleTimeSeries.new(:data_vars =>
                                        {'pizzas' => @pizzas, 'miles' => @miles,
-                                        'tasks_done' => @tasks_done},
+                                        'tasks_done' => @tasks_done, 'empty' => []},
                                     :time_vars =>
                                        {'dows' => @dows, 'dates' => @dates,
                                         'full_dates' => @full_dates})
@@ -86,6 +86,18 @@ describe SimpleTimeSeries do
       @my_data.tasks_done_on('Saturday').should == 77
       @my_data.tasks_done_on('2014-01-07').should == 77
       @my_data.tasks_done_on('Jan 7, 2014').should == 77
+    end
+
+    it "should allow you to build up a data series datapoint by datapoint" do
+      @my_data.current('empty').should == []
+      @my_data.set('empty', 'Jan 1, 2014', 1)
+      @my_data.set('empty', 'Monday', 2)
+      @my_data.set('empty', '2014-01-03', 3)
+      @my_data.set('empty', 'Jan 4, 2014', 4)
+      @my_data.set('empty', 'Thursday', 5)
+      @my_data.set('empty', '2014-01-06', 6)
+      @my_data.set('empty', 'Jan 7, 2014', 7)
+      @my_data.current('empty').should == [1, 2, 3, 4, 5, 6, 7]
     end
 
   end
