@@ -26,18 +26,18 @@ Imagine you have recorded over the past week the number of pizzas you have consu
     miles = [2.2, 3.1, 0.0, 4.3, 1.2, 12.2, 2.3]
     tasks_done = [2, 3, 0, 14, 3, 11, 0]
 
-To associate these observations with the days they belong to, you create ordered arrays that could hold sequential observation numbers, days-of-the-week, dates or whatever. (You can put whatever time/date values in these arrays that you wish. Only their order in the array(s) matters.) Below, we create "dows" (for days-of-the-week) and "dates," but you can make whatever ordered observation/date variables you desire:
+To associate these observations with the days they belong to, you create one or more ordered arrays holding sequential observation numbers, days-of-the-week, dates or anything else you want to use to label the ordered events/dates for which you're recording data. (You can put whatever time/date values in these arrays that you wish. Only their order in the array(s) matters.) Below, we create "dows" (for days-of-the-week), "dates" and "full_dates," but you can make whatever ordered observation/date variables you desire. And you need only one time variable:
 
-    dows = ['Sunday', 'Monday', 'Tuesday', 'Wednesday',
-            'Thursday', 'Friday', 'Saturday']
-    dates = ['2014-01-01', '2014-01-02', '2014-01-03',
-             '2014-01-04', '2014-01-05', '2014-01-06', '2014-01-07']
+    dows = ['Sunday', 'Monday', 'Tuesday', 'Wednesday','Thursday', 'Friday', 'Saturday']
+    dates = ['2014-01-01', '2014-01-02', '2014-01-03', '2014-01-04', '2014-01-05', '2014-01-06', '2014-01-07']
+    full_dates = ['Jan 1, 2014', 'Jan 2, 2014', 'Jan 3, 2014', 'Jan 4, 2014', 'Jan 5, 2014', 'Jan 6, 2014', 'Jan 7, 2014']
 
 This is sufficient to package up your data into a SimpleTimeSeries object:
 
     require 'simple_time_series'
     my_data = SimpleTimeSeries.new(:time_vars => {'dows' => dows,
-                                                  'dates' => dates},
+                                                  'dates' => dates,
+                                                  'full_dates' => full_dates},
                                    :data_vars => {'pizzas' => pizzas,
                                                   'miles' => miles,
                                                   'tasks_done' => tasks_done})
@@ -46,17 +46,23 @@ You can now easily access the value of any data variable for any value of one of
 
     puts "Pizzas eaten on Tuesday: #{my_data.pizzas_on('Tuesday')}" # prints 1
     puts "Pizzas eaten on 2014-01-03: #{my_data.pizzas_on('2014-01-03')}" # prints 1
+    puts "Pizzas eaten on 'Jan 3, 2014': #{my_data.pizzas_on('Jan 3, 2014')}" # prints 1
+
     puts "Miles run on Friday: #{my_data.miles_run_on('Friday')}" # prints 12.2
     puts "Miles run on 2014-01-06: #{my_data.miles_run_on('2014-01-06')}" # prints 12.2
+    puts "Miles run on 'Jan 6, 2014': #{my_data.miles_run_on('Jan 6, 2014')}" # prints 12.2
+
     puts "Tasks done on Saturday: #{my_data.tasks_done_on('Saturday')}" # prints 0
     puts "Tasks done on 2014-01-07: #{my_data.tasks_done_on('2014-01-07')}" # prints 0
+    puts "Tasks done on 'Jan 7, 2014': #{my_data.tasks_done_on('Jan 7, 2014')}" # prints 0
 
 You can get the same values by calling SimpleTimeSeries#find with two arguments, first the data_var name and then the time_var value:
 
-    puts "Miles on Friday: #{my_data.find('miles', 'Friday')}"
-    puts "Miles on 2014-01-05: #{my_data.find('miles','2014-01-05')}"
-    puts "Tasks done on Wednesday: #{my_data.find('tasks_done', 'Wednesday')}"
-    puts "Tasks done on 2014-01-05: #{my_data.find('tasks_done', '2014-01-05')}"
+    puts "Pizzas eaten on 'Jan 2, 2014': #{my_data.find('pizzas', 'Jan 2, 2014')}" # prints 0
+    puts "Miles on Friday: #{my_data.find('miles', 'Friday')}" # prints 12.2
+    puts "Miles on 2014-01-05: #{my_data.find('miles','2014-01-05')}" # prints 1.2
+    puts "Tasks done on Wednesday: #{my_data.find('tasks_done', 'Wednesday')}" # prints 14
+    puts "Tasks done on 2014-01-05: #{my_data.find('tasks_done', '2014-01-05')}" # prints 3
 
 Currently, SimpleTimeSeries assumes all variable arrays have equal lengths and represent the same sequence of observations. Though the gem says "time series," it should work with any kind of sequential data.
 
