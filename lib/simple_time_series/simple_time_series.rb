@@ -13,6 +13,22 @@ class SimpleTimeSeries
     send (what + '_on').to_sym, date
   end
 
+  def current(what)
+    send what.to_sym
+  end
+
+  def index_of_date_value(date)
+    time_vars.each do |tv_key, tv_val|
+      return tv_val.index(date) if tv_val.include?(date)
+    end
+    nil
+  end
+
+  def set(data_var, date, value)
+    arr_index = index_of_date_value(date)
+    current(data_var)[arr_index] = value
+  end
+
   private
 
   def define_time_methods_and_set_values

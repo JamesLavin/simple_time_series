@@ -5,6 +5,7 @@ describe SimpleTimeSeries do
   before do
     @dows = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     @dates = ['2014-01-01', '2014-01-02', '2014-01-03', '2014-01-04', '2014-01-05', '2014-01-06', '2014-01-07']
+    @full_dates = ['Jan 1, 2014', 'Jan 2, 2014', 'Jan 3, 2014', 'Jan 4, 2014', 'Jan 5, 2014', 'Jan 6, 2014', 'Jan 7, 2014']
     @pizzas = [0, 0, 1, 0, 0.5, 0, 2]
     @miles = [2.2, 3.1, 0.0, 4.3, 1.2, 12.2, 2.3]
     @tasks_done = [2, 3, 0, 14, 3, 11, 0]
@@ -12,7 +13,8 @@ describe SimpleTimeSeries do
                                        {'pizzas' => @pizzas, 'miles' => @miles,
                                         'tasks_done' => @tasks_done},
                                     :time_vars =>
-                                       {'dows' => @dows, 'dates' => @dates})
+                                       {'dows' => @dows, 'dates' => @dates,
+                                        'full_dates' => @full_dates})
   end
 
   it "should be creatable" do
@@ -47,11 +49,45 @@ describe SimpleTimeSeries do
   end
 
   it "should create setter methods for updating a data series" do
+    @my_data.pizzas_on('Tuesday').should == 1
     @my_data.pizzas = [10, 11, 12, 13, 14, 15, 16]
     @my_data.pizzas_on('Tuesday').should == 12
     @my_data.pizzas_on('Thursday').should == 14
     @my_data.pizzas_on('2014-01-04').should == 13
     @my_data.pizzas_on('2014-01-07').should == 16
+  end
+
+  describe "#current" do
+
+    it "should print the current array for any data variable" do
+      @my_data.current('pizzas').should == @pizzas
+    end
+
+  end
+
+  describe "#index_of_date_value" do
+
+    it "should return the array index of any date value" do
+      @my_data.index_of_date_value('Thursday').should == 4
+      @my_data.index_of_date_value('2014-01-01').should == 0
+      @my_data.index_of_date_value('Jan 7, 2014').should == 6
+    end
+
+  end
+
+  describe "#set" do
+
+    it "should allow updating a single data series value" do
+      @my_data.set('pizzas', 'Tuesday', 44)
+      @my_data.pizzas_on('Tuesday').should == 44
+      @my_data.pizzas_on('2014-01-03').should == 44
+      @my_data.pizzas_on('Jan 3, 2014').should == 44
+      @my_data.set('tasks_done', 'Saturday', 77)
+      @my_data.tasks_done_on('Saturday').should == 77
+      @my_data.tasks_done_on('2014-01-07').should == 77
+      @my_data.tasks_done_on('Jan 7, 2014').should == 77
+    end
+
   end
 
 end
