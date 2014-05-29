@@ -100,6 +100,18 @@ describe SimpleTimeSeries do
       @my_data.current('empty').should == [1, 2, 3, 4, 5, 6, 7]
     end
 
+    it "should allow you to build up a data series datapoint by datapoint in any order" do
+      @my_data.current('empty').should == []
+      @my_data.set('empty', '2014-01-06', 6)
+      @my_data.set('empty', 'Jan 4, 2014', 4)
+      @my_data.set('empty', 'Jan 1, 2014', 1)
+      @my_data.set('empty', '2014-01-03', 3)
+      @my_data.set('empty', 'Thursday', 5)
+      @my_data.set('empty', 'Jan 7, 2014', 7)
+      @my_data.set('empty', 'Monday', 2)
+      @my_data.current('empty').should == [1, 2, 3, 4, 5, 6, 7]
+    end
+
   end
 
 end
