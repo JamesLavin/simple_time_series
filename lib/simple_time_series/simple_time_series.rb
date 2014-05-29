@@ -29,30 +29,41 @@ class SimpleTimeSeries
     current(data_var)[arr_index] = value
   end
 
+
+  def new_time_var(var, vals)
+    define_getter_and_setter(var)
+    instance_variable_set("@#{var}", vals) if vals
+    time_vars[var] = vals unless time_vars.has_key?(var)
+  end
+
+  def new_data_var(var, vals)
+    define_getter_and_setter(var)
+    var_on = "#{var}_on"
+    self.class.class_eval do
+      define_method(var_on) do |date|
+        time_vars.each do |tv_key, tv_val|
+          # tv_key is something like 'dows' or 'dates'
+          # tv_val is an array of associated values
+          return eval(var)[tv_val.index(date)] if tv_val.include?(date)
+        end
+        raise "Can't find #{var_on} for #{date}"
+      end
+    end
+    instance_variable_set("@#{var}", vals) if vals
+    data_vars[var] = vals unless data_vars.has_key?(var)
+  end
+
   private
 
   def define_time_methods_and_set_values
     time_vars.each do |var, vals|
-      define_getter_and_setter(var)
-      instance_variable_set("@#{var}", vals) if vals
+      new_time_var(var, vals)
     end
   end
 
   def define_data_methods_and_set_values
     data_vars.each do |var, vals|
-      define_getter_and_setter(var)
-      var_on = "#{var}_on"
-      self.class.class_eval do
-        define_method(var_on) do |date|
-          time_vars.each do |tv_key, tv_val|
-            # tv_key is something like 'dows' or 'dates'
-            # tv_val is an array of associated values
-            return eval(var)[tv_val.index(date)] if tv_val.include?(date)
-          end
-          raise "Can't find #{var_on} for #{date}"
-        end
-      end
-      instance_variable_set("@#{var}", vals) if vals
+      new_data_var(var, vals)
     end
   end
 

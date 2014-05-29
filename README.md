@@ -113,6 +113,31 @@ You can then set individual values using #set till you've filled in all values:
 
 my_data2.empty now equals [1, 2, 3, 4, 5, 6, 7]
 
+You can also create new time variables and data variables after you have created your SimpleTimeSeries object.
+
+Here's how you can create and use a new time variable:
+
+    my_data.new_time_var('short_dow',['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'])
+
+    puts my_data.tasks_done_on('Fri') # prints 11
+    puts my_data.pizzas_on('Thurs') # prints 0.5
+
+Here's how you can create and use a new data variable:
+
+    my_data.new_data_var('hours_of_tv',[7, 3, 3.5, 3, 4, 6.5, 11])
+
+    puts my_data.hours_of_tv # prints [7, 3, 3.5, 3, 4, 6.5, 11]
+    puts my_data.hours_of_tv_on('Friday') # prints 6.5
+    puts my_data.hours_of_tv_on('2014-01-01') # prints 7
+
+You can create new time and data variables and use them together:
+
+    my_data.new_time_var('short_dow',['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'])
+    my_data.new_data_var('hours_of_tv',[7, 3, 3.5, 3, 4, 6.5, 11])
+
+    puts my_data.hours_of_tv_on('Fri') # prints 6.5
+    puts my_data.hours_of_tv_on('Sun') # prints 7
+
 Currently, SimpleTimeSeries assumes all variable arrays have equal lengths and represent the same sequence of observations. Though the gem says "time series," it should work with any kind of sequential data.
 
 ## Disclaimer
