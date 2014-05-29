@@ -20,9 +20,7 @@ Or install it yourself as:
 
 Example:
 
-Imagine you have recorded over the past week the number of pizzas consumed, the number of miles run, and the number of tasks done.
-
-You have these stored in simple Ruby arrays (that you can name anything you want):
+Imagine you have recorded over the past week the number of pizzas you have consumed, the number of miles you've run, and the number of tasks you've done and you have stored these values in simple Ruby arrays (that you can name anything you want):
 
     pizzas = [0, 0, 1, 0, 0.5, 0, 2]
     miles = [2.2, 3.1, 0.0, 4.3, 1.2, 12.2, 2.3]
@@ -59,6 +57,8 @@ You can get the same values by calling SimpleTimeSeries#find with two arguments,
     puts "Miles on 2014-01-05: #{my_data.find('miles','2014-01-05')}"
     puts "Tasks done on Wednesday: #{my_data.find('tasks_done', 'Wednesday')}"
     puts "Tasks done on 2014-01-05: #{my_data.find('tasks_done', '2014-01-05')}"
+
+Currently, SimpleTimeSeries assumes all variable arrays have equal lengths and represent the same sequence of observations. Though the gem says "time series," it should work with any kind of sequential data.
 
 ## Disclaimer
 
