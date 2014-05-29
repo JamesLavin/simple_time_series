@@ -152,6 +152,10 @@ This began as a simple code example for a collague who needed to do something si
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
+## Todo
+
+1. Enable range extraction using time_var values
+
 ## Acknowledgements
 
 Thanks to my employer, Hedgeye, for letting me create and publish this.
