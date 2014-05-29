@@ -44,13 +44,20 @@ This is sufficient to package up your data into a SimpleTimeSeries object:
                                                   'miles' => miles,
                                                   'tasks_done' => tasks_done})
 
-You can now easily access the value of any data variable for any value of one of your time variables:
+You can now easily access the value of any data variable for any value of one of your time variables via xxx_on methods created for each of your data_vars (here called 'pizzas_on,' 'miles_on' and 'tasks_done_on'):
 
-    puts "Pizzas on Tuesday: #{my_data.pizzas_on('Tuesday')}"
-    puts "Pizzas on 2014-01-03: #{my_data.pizzas_on('2014-01-03')}"
+    puts "Pizzas eaten on Tuesday: #{my_data.pizzas_on('Tuesday')}" # prints 1
+    puts "Pizzas eaten on 2014-01-03: #{my_data.pizzas_on('2014-01-03')}" # prints 1
+    puts "Miles run on Friday: #{my_data.miles_run_on('Friday')}" # prints 12.2
+    puts "Miles run on 2014-01-06: #{my_data.miles_run_on('2014-01-06')}" # prints 12.2
+    puts "Tasks done on Saturday: #{my_data.tasks_done_on('Saturday')}" # prints 0
+    puts "Tasks done on 2014-01-07: #{my_data.tasks_done_on('2014-01-07')}" # prints 0
+
+You can get the same values by calling SimpleTimeSeries#find with two arguments, first the data_var name and then the time_var value:
+
     puts "Miles on Friday: #{my_data.find('miles', 'Friday')}"
     puts "Miles on 2014-01-05: #{my_data.find('miles','2014-01-05')}"
-    puts "Tasks done on Friday: #{my_data.find('tasks_done', 'Friday')}"
+    puts "Tasks done on Wednesday: #{my_data.find('tasks_done', 'Wednesday')}"
     puts "Tasks done on 2014-01-05: #{my_data.find('tasks_done', '2014-01-05')}"
 
 ## Disclaimer
