@@ -45,6 +45,15 @@ class SimpleTimeSeries
         last_idx = index_of_date_value(last)
         (start_idx && last_idx) ? eval(var)[start_idx..last_idx] : nil
       end
+      define_method("#{var}_subset_set") do |first, last, val_arr|
+        start_idx = index_of_date_value(first)
+        last_idx = index_of_date_value(last)
+        if (start_idx && last_idx)
+          eval(var)[start_idx..last_idx] = val_arr
+        else
+          raise "Could not run #{var}_subset with values #{val_arr}"
+        end
+      end
       define_method(var_on) do |date|
         time_vars.each do |tv_key, tv_val|
           # tv_key is something like 'dows' or 'dates'
@@ -56,6 +65,9 @@ class SimpleTimeSeries
     end
     instance_variable_set("@#{var}", vals) if vals
     data_vars[var] = vals unless data_vars.has_key?(var)
+    #def eval(var).[] (first, last)
+    #  send "#{var}_subset".to_sym, first, last
+    #end
   end
 
   private

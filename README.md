@@ -148,6 +148,13 @@ You can even mix different time variables together:
     my_data.tasks_done_subset('Monday','Jan 5, 2014') # returns [3, 0, 14, 3]
     my_data.pizzas_subset('Jan 1, 2014','2014-01-04') # returns [0, 0, 1, 0]
 
+You can also set a subset of values
+
+    my_data.pizzas_subset_set('Tuesday','Thursday', [7, 8, 9.5])
+    my_data.pizzas_subset('Tuesday','Thursday') # returns [7, 8, 9.5]
+    my_data.pizzas_subset('2014-01-03','Jan 5, 2014') # returns [7, 8, 9.5]
+    my_data.pizzas # returns [0, 0, 7, 8, 9.5, 0, 2]
+
 Currently, SimpleTimeSeries assumes all variable arrays have equal lengths and represent the same sequence of observations. Though the gem says "time series," it should work with any kind of sequential data.
 
 ## Disclaimer
@@ -164,7 +171,10 @@ This began as a simple code example for a collague who needed to do something si
 
 ## Todo
 
-1. Enable range extraction using time_var values
+1. Enable generation of a difference array for any data_var
+2. Enable cumulative sum on any data_var
+3. Enable range extraction via data_var[start_time, end_time]. This currently works as data_var_subset(start_time, end_time).
+4. Enable setting values for a range via data_var[start_time, end_time]=
 
 ## Acknowledgements
 
