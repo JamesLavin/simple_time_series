@@ -143,4 +143,38 @@ describe SimpleTimeSeries do
 
   end
 
+  describe "#[,]" do
+
+    it "returns the correct array subset when passed index values" do
+      @my_data.pizzas[1,4].should == @pizzas[1,4]
+    end
+
+  end
+
+  describe "#xyz_subset" do
+
+    it "returns the correct array subset when passed time_var values" do
+      @my_data.pizzas_subset('Tuesday','Thursday').should == [1, 0, 0.5]
+    end
+
+    it "returns the correct array subset when passed time_var values" do
+      @my_data.pizzas_subset('Tuesday','Saturday').should == [1, 0, 0.5, 0, 2]
+    end
+
+    it "returns the correct array subset when passed time_var values" do
+      @my_data.pizzas_subset('2014-01-03','2014-01-07').should == [1, 0, 0.5, 0, 2]
+    end
+
+    it "returns the correct array subset when passed time_var values" do
+      @my_data.tasks_done_subset('Jan 2, 2014','Jan 5, 2014').should == [3, 0, 14, 3]
+      @my_data.pizzas_subset('Jan 1, 2014','Jan 4, 2014').should == [0, 0, 1, 0]
+    end
+
+    it "returns the correct array subset when passed a mix of time_var types" do
+      @my_data.tasks_done_subset('Monday','Jan 5, 2014').should == [3, 0, 14, 3]
+      @my_data.pizzas_subset('Jan 1, 2014','2014-01-04').should == [0, 0, 1, 0]
+    end
+
+  end
+
 end

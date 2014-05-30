@@ -138,6 +138,16 @@ You can create new time and data variables and use them together:
     puts my_data.hours_of_tv_on('Fri') # prints 6.5
     puts my_data.hours_of_tv_on('Sun') # prints 7
 
+You can extract a subset of any data variable by using any time variable values as indexes for the first and last elements you want in your subset:
+
+    my_data.pizzas_subset('Tuesday','Thursday') # returns [1, 0, 0.5]
+    my_data.tasks_done_subset('Jan 2, 2014','Jan 5, 2014') # returns [3, 0, 14, 3]
+
+You can even mix different time variables together:
+
+    my_data.tasks_done_subset('Monday','Jan 5, 2014') # returns [3, 0, 14, 3]
+    my_data.pizzas_subset('Jan 1, 2014','2014-01-04') # returns [0, 0, 1, 0]
+
 Currently, SimpleTimeSeries assumes all variable arrays have equal lengths and represent the same sequence of observations. Though the gem says "time series," it should work with any kind of sequential data.
 
 ## Disclaimer

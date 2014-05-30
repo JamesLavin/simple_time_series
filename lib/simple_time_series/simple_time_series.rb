@@ -40,6 +40,12 @@ class SimpleTimeSeries
     define_getter_and_setter(var)
     var_on = "#{var}_on"
     self.class.class_eval do
+      define_method("#{var}_subset") do |first, last|
+        start_idx = index_of_date_value(first)
+        last_idx = index_of_date_value(last)
+        return eval(var)[start_idx..last_idx] if (start_idx && last_idx)
+        nil
+      end
       define_method(var_on) do |date|
         time_vars.each do |tv_key, tv_val|
           # tv_key is something like 'dows' or 'dates'
