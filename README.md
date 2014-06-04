@@ -163,7 +163,7 @@ And you can get an array of differences between consecutive observations for any
 You can also grab subsets of these arrays of differences. It returns a single value if you request a single value:
 
     my_data.tasks_done_diff('Saturday') # returns -11
-    my_data.tasks_done_diff('Sunday') # returns nil because the first time slot cannot have a difference
+    my_data.tasks_done_diff('Sunday') # returns nil (because the first time slot cannot have a difference)
     my_data.pizzas_diff('Saturday') # returns 2
     my_data.pizzas_diff('2014-01-01') # returns nil (again, because the first time slot has no difference)
     my_data.pizzas_diff('Jan 4, 2014') # returns -1
