@@ -155,11 +155,16 @@ You can also set a subset of values
     my_data.pizzas_subset('2014-01-03','Jan 5, 2014') # returns [7, 8, 9.5]
     my_data.pizzas # returns [0, 0, 7, 8, 9.5, 0, 2]
 
+And you can get an array of differences between consecutive observations for any data_var:
+
+    my_data.tasks_done_diff # returns [nil, 1, -3, 14, -11, 8, -11]
+    my_data.pizzas_diff # returns [nil, 0, 1, -1, 0.5, -0.5, 2]    
+
 Currently, SimpleTimeSeries assumes all variable arrays have equal lengths and represent the same sequence of observations. Though the gem says "time series," it should work with any kind of sequential data.
 
 ## Disclaimer
 
-This began as a simple code example for a collague who needed to do something similar. When he said he might actually use it, I decided to create this gem. But it's really simple, with very basic functionality.
+This began as a simple code example for a collague who had programmed something similar but in a manual, repetitive way with integer-indexed subscript references to rows and columns. The code worked but had become an unmaintainable, non-extensible monster. When he said he might actually use my code example, I turned it into this gem. It's really simple, with very basic functionality, but he has now started using this, so I may progressively add bells and whistles.
 
 ## Contributing
 
@@ -171,10 +176,9 @@ This began as a simple code example for a collague who needed to do something si
 
 ## Todo
 
-1. Enable generation of a difference array for any data_var
-2. Enable cumulative sum on any data_var
-3. Enable range extraction via data_var[start_time, end_time]. This currently works as data_var_subset(start_time, end_time).
-4. Enable setting values for a range via data_var[start_time, end_time]=
+1. Enable cumulative sum on any data_var
+2. Enable range extraction via data_var[start_time, end_time]. This currently works as data_var_subset(start_time, end_time).
+3. Enable setting values for a range via data_var[start_time, end_time]=
 
 ## Acknowledgements
 

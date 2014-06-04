@@ -193,4 +193,14 @@ describe SimpleTimeSeries do
 
   end
 
+  describe "#xyz_diff" do
+
+    it "should calculate the correct vector of differences for the referenced data_var" do
+      @my_data.tasks_done_diff.should == [nil, 1, -3, 14, -11, 8, -11]
+      @my_data.tasks_done_diff[3].should == 14
+      @my_data.pizzas_diff.should == [nil, 0, 1, -1, 0.5, -0.5, 2]
+    end
+
+  end
+
 end

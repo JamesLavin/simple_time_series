@@ -54,6 +54,9 @@ class SimpleTimeSeries
           raise "Could not run #{var}_subset with values #{val_arr}"
         end
       end
+      define_method("#{var}_diff") do
+        eval(var).each_cons(2).map { |val1, val2| val2 - val1 }.unshift(nil)
+      end
       define_method(var_on) do |date|
         time_vars.each do |tv_key, tv_val|
           # tv_key is something like 'dows' or 'dates'
