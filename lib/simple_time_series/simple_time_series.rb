@@ -40,7 +40,7 @@ class SimpleTimeSeries
     define_getter_and_setter(var)
     var_on = "#{var}_on"
     self.class.class_eval do
-      define_method("#{var}_subset") do |first, last|
+      define_method("#{var}_subset") do |first, last=first|
         start_idx = index_of_date_value(first)
         last_idx = index_of_date_value(last)
         (start_idx && last_idx) ? eval(var)[start_idx..last_idx] : nil
@@ -54,8 +54,13 @@ class SimpleTimeSeries
           raise "Could not run #{var}_subset with values #{val_arr}"
         end
       end
-      define_method("#{var}_diff") do
-        eval(var).each_cons(2).map { |val1, val2| val2 - val1 }.unshift(nil)
+      define_method("#{var}_diff") do |first=nil, last=nil| # should work only on numeric data
+        time_vars.each do |tv_key, tv_val|
+          start_idx = index_of_date_value(first) || 0
+          last_idx = index_of_date_value(last) || (first.nil? ? -1 : start_idx)
+          answer = (eval(var).each_cons(2).map { |val1, val2| val2 - val1 }.unshift(nil))[start_idx..last_idx]
+          return answer.length == 1 ? answer[0] : answer
+        end
       end
       define_method(var_on) do |date|
         time_vars.each do |tv_key, tv_val|

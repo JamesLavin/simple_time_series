@@ -161,6 +161,10 @@ describe SimpleTimeSeries do
       @my_data.pizzas_subset('Tuesday','Thursday').should == [1, 0, 0.5]
     end
 
+    it "returns the correct array subset when passed a single time_var value" do
+      @my_data.pizzas_subset('Thursday').should == [0.5]
+    end
+
     it "returns the correct array subset when passed time_var values" do
       @my_data.pizzas_subset('Tuesday','Saturday').should == [1, 0, 0.5, 0, 2]
     end
@@ -199,6 +203,19 @@ describe SimpleTimeSeries do
       @my_data.tasks_done_diff.should == [nil, 1, -3, 14, -11, 8, -11]
       @my_data.tasks_done_diff[3].should == 14
       @my_data.pizzas_diff.should == [nil, 0, 1, -1, 0.5, -0.5, 2]
+    end
+
+    it "should let me access a single value in a vector of differences with any time_var value" do
+      @my_data.tasks_done_diff('Saturday').should == -11
+      @my_data.tasks_done_diff('Sunday').should be_nil
+      @my_data.pizzas_diff('Saturday').should == 2
+      @my_data.pizzas_diff('2014-01-01').should be_nil
+      @my_data.pizzas_diff('Jan 4, 2014').should == -1
+    end
+
+    it "should let me access a subarray of a vector of differences with any time_var value" do
+      @my_data.tasks_done_diff('Sunday','Monday').should == [nil, 1]
+      @my_data.tasks_done_diff('Tuesday','Saturday').should == [-3, 14, -11, 8, -11]
     end
 
   end

@@ -160,6 +160,19 @@ And you can get an array of differences between consecutive observations for any
     my_data.tasks_done_diff # returns [nil, 1, -3, 14, -11, 8, -11]
     my_data.pizzas_diff # returns [nil, 0, 1, -1, 0.5, -0.5, 2]    
 
+You can also grab subsets of these arrays of differences. It returns a single value if you request a single value:
+
+    my_data.tasks_done_diff('Saturday') # returns -11
+    my_data.tasks_done_diff('Sunday') # returns nil because the first time slot cannot have a difference
+    my_data.pizzas_diff('Saturday') # returns 2
+    my_data.pizzas_diff('2014-01-01') # returns nil (again, because the first time slot has no difference)
+    my_data.pizzas_diff('Jan 4, 2014') # returns -1
+
+It returns an array if you ask for a range of values:
+
+    my_data.tasks_done_diff('Sunday','Monday') # returns [nil, 1]
+    my_data.tasks_done_diff('Tuesday','Saturday') # returns [-3, 14, -11, 8, -11]
+
 Currently, SimpleTimeSeries assumes all variable arrays have equal lengths and represent the same sequence of observations. Though the gem says "time series," it should work with any kind of sequential data.
 
 ## Disclaimer
