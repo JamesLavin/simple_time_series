@@ -55,6 +55,7 @@ class SimpleTimeSeries
         end
       end
       define_method("#{var}_diff") do |first=nil, last=nil| # should work only on numeric data
+        # this could be made more efficient by caching the full array and/or calculating only a subset of values
         time_vars.each do |tv_key, tv_val|
           start_idx = index_of_date_value(first) || 0
           last_idx = index_of_date_value(last) || (first.nil? ? -1 : start_idx)
