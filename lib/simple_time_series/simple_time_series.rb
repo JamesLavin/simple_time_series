@@ -63,6 +63,17 @@ class SimpleTimeSeries
           return answer.length == 1 ? answer[0] : answer
         end
       end
+      # should DRY out variable creation, probably by passing in a strategy along with the variable name
+      define_method("#{var}_cumsum") do |first=nil, last=nil| # should work only on numeric data
+        # this could be made more efficient by caching the full array and/or calculating only a subset of values
+        time_vars.each do |tv_key, tv_val|
+          start_idx = index_of_date_value(first) || 0
+          last_idx = index_of_date_value(last) || (first.nil? ? -1 : start_idx)
+          sum = eval(var)[0]
+          answer = (eval(var).each_cons(2).map { |val1, val2| sum += val2 }.unshift(eval(var)[start_idx]))[start_idx..last_idx]
+          return answer.length == 1 ? answer[0] : answer
+        end
+      end
       define_method(var_on) do |date|
         time_vars.each do |tv_key, tv_val|
           # tv_key is something like 'dows' or 'dates'

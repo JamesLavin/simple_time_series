@@ -173,6 +173,23 @@ It returns an array if you ask for a range of values:
     my_data.tasks_done_diff('Sunday','Monday') # returns [nil, 1]
     my_data.tasks_done_diff('Tuesday','Saturday') # returns [-3, 14, -11, 8, -11]
 
+It also calculates cumulative sums for any data_var:
+
+    my_data.tasks_done_cumsum # returns [2, 5, 5, 19, 22, 33, 33]
+    my_data.tasks_done_cumsum[3] # returns 19
+    my_data.tasks_done_cumsum[3, 2] # returns [19, 22]
+    my_data.tasks_done_cumsum[3, 4] # returns [19, 22, 33, 33]
+    my_data.pizzas_cumsum # returns [0, 0, 1, 1, 1.5, 1.5, 3.5]
+
+    my_data.tasks_done_cumsum('Saturday') # returns 33
+    my_data.tasks_done_cumsum('Sunday') # returns 2
+    my_data.pizzas_cumsum('Saturday') # returns 3.5
+    my_data.pizzas_cumsum('2014-01-01') # returns 0
+    my_data.pizzas_cumsum('Jan 4, 2014') # returns 1
+
+    my_data.tasks_done_cumsum('Sunday','Monday') # returns [2, 5]
+    my_data.tasks_done_cumsum('Tuesday','Saturday') # returns [5, 19, 22, 33, 33]
+
 Currently, SimpleTimeSeries assumes all variable arrays have equal lengths and represent the same sequence of observations. Though the gem says "time series," it should work with any kind of sequential data.
 
 ## Disclaimer

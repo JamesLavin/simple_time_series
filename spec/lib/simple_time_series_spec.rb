@@ -202,6 +202,8 @@ describe SimpleTimeSeries do
     it "should calculate the correct vector of differences for the referenced data_var" do
       @my_data.tasks_done_diff.should == [nil, 1, -3, 14, -11, 8, -11]
       @my_data.tasks_done_diff[3].should == 14
+      @my_data.tasks_done_diff[3, 2].should == [14, -11]
+      @my_data.tasks_done_diff[3, 4].should == [14, -11, 8, -11]
       @my_data.pizzas_diff.should == [nil, 0, 1, -1, 0.5, -0.5, 2]
     end
 
@@ -216,6 +218,32 @@ describe SimpleTimeSeries do
     it "should let me access a subarray of a vector of differences with any time_var value" do
       @my_data.tasks_done_diff('Sunday','Monday').should == [nil, 1]
       @my_data.tasks_done_diff('Tuesday','Saturday').should == [-3, 14, -11, 8, -11]
+    end
+
+  end
+
+  describe "#xyz_cumsum" do
+
+    it "should calculate the correct vector of cumulative sums for the referenced data_var" do
+      # @tasks_done = [2, 3, 0, 14, 3, 11, 0]
+      @my_data.tasks_done_cumsum.should == [2, 5, 5, 19, 22, 33, 33]
+      @my_data.tasks_done_cumsum[3].should == 19
+      @my_data.tasks_done_cumsum[3, 2].should == [19, 22]
+      @my_data.tasks_done_cumsum[3, 4].should == [19, 22, 33, 33]
+      @my_data.pizzas_cumsum.should == [0, 0, 1, 1, 1.5, 1.5, 3.5]
+    end
+
+    it "should let me access a single value in a vector of cumulative sums with any time_var value" do
+      @my_data.tasks_done_cumsum('Saturday').should == 33
+      @my_data.tasks_done_cumsum('Sunday').should == 2
+      @my_data.pizzas_cumsum('Saturday').should == 3.5
+      @my_data.pizzas_cumsum('2014-01-01').should == 0
+      @my_data.pizzas_cumsum('Jan 4, 2014').should == 1
+    end
+
+    it "should let me access a subarray of a vector of differences with any time_var value" do
+      @my_data.tasks_done_cumsum('Sunday','Monday').should == [2, 5]
+      @my_data.tasks_done_cumsum('Tuesday','Saturday').should == [5, 19, 22, 33, 33]
     end
 
   end
