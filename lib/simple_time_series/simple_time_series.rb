@@ -17,6 +17,10 @@ class SimpleTimeSeries
     end
   end
 
+  def find_plus_label(what, date, end_date=nil)
+    find(what, date, end_date).unshift(what)
+  end
+
   def current(what)
     send what.to_sym
   end

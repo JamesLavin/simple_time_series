@@ -73,6 +73,8 @@ You can also get ranges of values using SimpleTimeSeries#find with three argumen
     my_data.find('miles', 'Jan 2, 2014','2014-01-06') # returns [3.1, 0.0, 4.3, 1.2, 12.2]
     my_data.find('tasks_done', '2014-01-02', 'Friday') # returns [3, 0, 14, 3, 11]
 
+(If you do the above, but replacing #find with #find_plus_label, the label will be prepended to the array.)
+
 You can view all the values associated with any variable:
 
     my_data.miles # prints [2.2, 3.1, 0.0, 4.3, 1.2, 12.2, 2.3]

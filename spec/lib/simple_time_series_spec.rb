@@ -26,7 +26,7 @@ describe SimpleTimeSeries do
     @my_data.time_vars["dows"].should == @dows
   end
 
-  it "has the correct methods" do
+  it "creates the correct methods" do
     [:time_vars, :time_vars=, :data_vars, :data_vars=, :find, :pizzas, :pizzas=, :pizzas_on, :miles, :miles=, :miles_on, :tasks_done, :tasks_done=, :tasks_done_on, :dows, :dows=, :dates, :dates=].each do |mthd|
       @my_data.methods.should include(mthd)
     end
@@ -55,6 +55,23 @@ describe SimpleTimeSeries do
     @my_data.find('miles', 'Sunday', '2014-01-07').should == [2.2, 3.1, 0.0, 4.3, 1.2, 12.2, 2.3]
     @my_data.find('miles', 'Jan 2, 2014','2014-01-06').should == [3.1, 0.0, 4.3, 1.2, 12.2]
     @my_data.find('tasks_done', '2014-01-02', 'Friday').should == [3, 0, 14, 3, 11]
+  end
+
+  #it "creates a #find_plus_label method for finding any data value for any time observation" do
+  #  @my_data.find('pizzas', 'Tuesday').should == 1
+  #  @my_data.find('pizzas', 'Thursday').should == 0.5
+  #  @my_data.find('miles', 'Sunday').should == 2.2
+  #  @my_data.find('miles', '2014-01-06').should == 12.2
+  #  @my_data.find('tasks_done', '2014-01-02').should == 3
+  #end
+
+  it "creates a #find_plus_label method for finding any data values for a range of observations" do
+    @my_data.find_plus_label('pizzas', 'Tuesday', 'Thursday').should == ['pizzas', 1, 0, 0.5]
+    @my_data.find_plus_label('pizzas', 'Thursday', '2014-01-07').should == ['pizzas', 0.5, 0, 2]
+    #@my_data.find_plus_label('miles', 'Saturday', '2014-01-07').should == 2.3
+    @my_data.find_plus_label('miles', 'Sunday', '2014-01-07').should == ['miles', 2.2, 3.1, 0.0, 4.3, 1.2, 12.2, 2.3]
+    @my_data.find_plus_label('miles', 'Jan 2, 2014','2014-01-06').should == ['miles', 3.1, 0.0, 4.3, 1.2, 12.2]
+    @my_data.find_plus_label('tasks_done', '2014-01-02', 'Friday').should == ['tasks_done', 3, 0, 14, 3, 11]
   end
 
   it "creates setter methods for updating a data series" do
@@ -233,7 +250,7 @@ describe SimpleTimeSeries do
 
   describe "#xyz_cumsum" do
 
-    it "should calculate the correct vector of cumulative sums for the referenced data_var" do
+    it "calculates the correct vector of cumulative sums for the referenced data_var" do
       # @tasks_done = [2, 3, 0, 14, 3, 11, 0]
       @my_data.tasks_done_cumsum.should == [2, 5, 5, 19, 22, 33, 33]
       @my_data.tasks_done_cumsum[3].should == 19
@@ -242,7 +259,7 @@ describe SimpleTimeSeries do
       @my_data.pizzas_cumsum.should == [0, 0, 1, 1, 1.5, 1.5, 3.5]
     end
 
-    it "should let me access a single value in a vector of cumulative sums with any time_var value" do
+    it "accesses a single value in a vector of cumulative sums with any time_var value" do
       @my_data.tasks_done_cumsum('Saturday').should == 33
       @my_data.tasks_done_cumsum('Sunday').should == 2
       @my_data.pizzas_cumsum('Saturday').should == 3.5
@@ -250,11 +267,19 @@ describe SimpleTimeSeries do
       @my_data.pizzas_cumsum('Jan 4, 2014').should == 1
     end
 
-    it "should let me access a subarray of a vector of differences with any time_var value" do
+    it "accesses a subarray of a vector of differences with any time_var value" do
       @my_data.tasks_done_cumsum('Sunday','Monday').should == [2, 5]
       @my_data.tasks_done_cumsum('Tuesday','Saturday').should == [5, 19, 22, 33, 33]
     end
 
   end
+
+  #describe "#data_array" do
+
+  #  it "builds an array of arrays with all time_vars" do
+  #    @my_data.data_array('tasks_done').should == [ @my_data.current('tasks_done')]
+  #  end
+
+  #end
 
 end
