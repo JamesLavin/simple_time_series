@@ -277,9 +277,14 @@ describe SimpleTimeSeries do
   describe "#data_array" do
 
     it "builds an array of arrays with all time_vars" do
-      @my_data.data_array('tasks_done').should == [ @my_data.current('tasks_done') ]
-      @my_data.data_array('tasks_done', 'pizzas').should == [ @my_data.current('tasks_done'),
-                                                              @my_data.current('pizzas') ]
+      @my_data.data_array('tasks_done', {}).should == [ @my_data.current('tasks_done') ]
+      @my_data.data_array('tasks_done', 'pizzas', {}).should == [ @my_data.current('tasks_done'),
+                                                                  @my_data.current('pizzas') ]
+      @my_data.data_array('tasks_done', 'pizzas', {:start => 'Tuesday', :end => 'Thursday'}).
+              should == [ @my_data.find('tasks_done','Tuesday','Thursday'),
+                          @my_data.find('pizzas', '2014-01-03', 'Jan 5, 2014') ]
+      #@my_data.data_array(['tasks_done', 'pizzas']).should == [ @my_data.current('tasks_done'),
+      #                                                        @my_data.current('pizzas') ]
     end
 
   end
