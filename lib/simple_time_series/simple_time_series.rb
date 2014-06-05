@@ -9,8 +9,12 @@ class SimpleTimeSeries
     define_time_methods_and_set_values
   end
 
-  def find(what, date)
-    send (what + '_on').to_sym, date
+  def find(what, date, end_date=nil)
+    if end_date
+      send (what + '_on').to_sym, date, end_date
+    else
+      send (what + '_on').to_sym, date
+    end
   end
 
   def current(what)
@@ -74,13 +78,19 @@ class SimpleTimeSeries
           return answer.length == 1 ? answer[0] : answer
         end
       end
-      define_method(var_on) do |date|
+      define_method(var_on) do |first, last=nil|
         time_vars.each do |tv_key, tv_val|
           # tv_key is something like 'dows' or 'dates'
           # tv_val is an array of associated values
-          return eval(var)[tv_val.index(date)] if tv_val.include?(date)
+          start_idx = index_of_date_value(first) || 0
+          last_idx = index_of_date_value(last) || (first.nil? ? -1 : start_idx)
+          if start_idx != last_idx #&& tv_val.include?(last)
+            return eval(var)[start_idx..last_idx]
+          elsif tv_val.include?(first)
+            return eval(var)[start_idx]
+          end
         end
-        raise "Can't find #{var_on} for #{date}"
+        raise "Can't find #{var_on} for #{first}"
       end
     end
     instance_variable_set("@#{var}", vals) if vals

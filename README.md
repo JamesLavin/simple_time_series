@@ -64,6 +64,15 @@ You can get the same values by calling SimpleTimeSeries#find with two arguments,
     puts "Tasks done on Wednesday: #{my_data.find('tasks_done', 'Wednesday')}" # prints 14
     puts "Tasks done on 2014-01-05: #{my_data.find('tasks_done', '2014-01-05')}" # prints 3
 
+You can also get ranges of values using SimpleTimeSeries#find with three arguments: 1) data_var name; 2) start time_var value; and, 3) end time_var value:
+
+    my_data.find('pizzas', 'Tuesday', 'Thursday') # returns [1, 0, 0.5]
+    my_data.find('pizzas', 'Thursday', '2014-01-07') # returns [0.5, 0, 2]
+    my_data.find('miles', 'Saturday', '2014-01-07') # returns 2.3 (a value, not an array, because the start/end dates are the same)
+    my_data.find('miles', 'Sunday', '2014-01-07') # returns [2.2, 3.1, 0.0, 4.3, 1.2, 12.2, 2.3]
+    my_data.find('miles', 'Jan 2, 2014','2014-01-06') # returns [3.1, 0.0, 4.3, 1.2, 12.2]
+    my_data.find('tasks_done', '2014-01-02', 'Friday') # returns [3, 0, 14, 3, 11]
+
 You can view all the values associated with any variable:
 
     my_data.miles # prints [2.2, 3.1, 0.0, 4.3, 1.2, 12.2, 2.3]
@@ -206,9 +215,8 @@ This began as a simple code example for a collague who had programmed something 
 
 ## Todo
 
-1. Enable cumulative sum on any data_var
-2. Enable range extraction via data_var[start_time, end_time]. This currently works as data_var_subset(start_time, end_time).
-3. Enable setting values for a range via data_var[start_time, end_time]=
+1. Enable range extraction via data_var[start_time, end_time]. This currently works as data_var_subset(start_time, end_time) and data_var_diff(), data_var_cumsum(), etc. but would be nice to grab subsets using array ranges.
+2. Enable setting values for a range via data_var[start_time, end_time]=. You can do this with data_var_subset_set(start_time, end_time), but it would be nice to make this work using array ranges.
 
 ## Acknowledgements
 

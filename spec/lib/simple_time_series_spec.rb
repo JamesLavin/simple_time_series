@@ -48,6 +48,15 @@ describe SimpleTimeSeries do
     @my_data.find('tasks_done', '2014-01-02').should == 3
   end
 
+  it "creates a #find method for finding any data values for a range of observations" do
+    @my_data.find('pizzas', 'Tuesday', 'Thursday').should == [1, 0, 0.5]
+    @my_data.find('pizzas', 'Thursday', '2014-01-07').should == [0.5, 0, 2]
+    @my_data.find('miles', 'Saturday', '2014-01-07').should == 2.3
+    @my_data.find('miles', 'Sunday', '2014-01-07').should == [2.2, 3.1, 0.0, 4.3, 1.2, 12.2, 2.3]
+    @my_data.find('miles', 'Jan 2, 2014','2014-01-06').should == [3.1, 0.0, 4.3, 1.2, 12.2]
+    @my_data.find('tasks_done', '2014-01-02', 'Friday').should == [3, 0, 14, 3, 11]
+  end
+
   it "creates setter methods for updating a data series" do
     @my_data.pizzas_on('Tuesday').should == 1
     @my_data.pizzas = [10, 11, 12, 13, 14, 15, 16]
