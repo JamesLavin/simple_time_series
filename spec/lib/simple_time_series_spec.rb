@@ -274,12 +274,14 @@ describe SimpleTimeSeries do
 
   end
 
-  #describe "#data_array" do
+  describe "#data_array" do
 
-  #  it "builds an array of arrays with all time_vars" do
-  #    @my_data.data_array('tasks_done').should == [ @my_data.current('tasks_done')]
-  #  end
+    it "builds an array of arrays with all time_vars" do
+      @my_data.data_array('tasks_done').should == [ @my_data.current('tasks_done') ]
+      @my_data.data_array('tasks_done', 'pizzas').should == [ @my_data.current('tasks_done'),
+                                                              @my_data.current('pizzas') ]
+    end
 
-  #end
+  end
 
 end

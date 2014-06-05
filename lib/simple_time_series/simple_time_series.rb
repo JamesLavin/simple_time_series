@@ -21,6 +21,14 @@ class SimpleTimeSeries
     find(what, date, end_date).unshift(what)
   end
 
+  def data_array(*data_var_names)
+    data_array = []
+    Array(data_var_names).each do |name|
+      data_array << current(name)
+    end
+    data_array
+  end
+
   def current(what)
     send what.to_sym
   end
