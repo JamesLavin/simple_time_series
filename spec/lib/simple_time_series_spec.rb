@@ -21,6 +21,36 @@ describe SimpleTimeSeries do
     @my_data.should be_a(SimpleTimeSeries)
   end
 
+  it "can convert (via #to_f) an input array of strings to an array of floats" do
+    @donuts = ["6", "0", "2", "4.5", "1.5", "0", "9"]
+    new_data = SimpleTimeSeries.new(:time_vars => {'dates' => @dates},
+                                    :data_vars => {'donuts' => @donuts.to_f})
+    new_data.current('donuts').should == [6, 0, 2, 4.5, 1.5, 0, 9]
+    new_data.current('donuts')[0].should_not == "6"
+  end
+
+  it "can convert (via #to_num) an input array of strings to an array of floats" do
+    @donuts = ["6", "0", "2", "4.5", "1.5", "0", "9"]
+    new_data = SimpleTimeSeries.new(:time_vars => {'dates' => @dates},
+                                    :data_vars => {'donuts' => @donuts.to_f})
+    new_data.current('donuts').should == [6, 0, 2, 4.5, 1.5, 0, 9]
+    new_data.current('donuts')[0].should_not == "6"
+  end
+
+  it "can convert (via #to_i) an input array of strings to an array of integers" do
+    @donuts = ["6", "0", "2", "4", "1", "0", "9"]
+    new_data = SimpleTimeSeries.new(:time_vars => {'dates' => @dates},
+                                    :data_vars => {'donuts' => @donuts.to_i})
+    new_data.current('donuts').should == [6, 0, 2, 4, 1, 0, 9]
+  end
+
+  it "can convert (via #to_num) an input array of strings to an array of integers" do
+    @donuts = ["6", "0", "2", "4", "1", "0", "9"]
+    new_data = SimpleTimeSeries.new(:time_vars => {'dates' => @dates},
+                                    :data_vars => {'donuts' => @donuts.to_num})
+    new_data.current('donuts').should == [6, 0, 2, 4, 1, 0, 9]
+  end
+
   it "sets #time_vars correctly" do
     @my_data.time_vars["dates"].should == @dates
     @my_data.time_vars["dows"].should == @dows

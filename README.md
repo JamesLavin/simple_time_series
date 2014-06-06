@@ -42,6 +42,13 @@ This is sufficient to package up your data into a SimpleTimeSeries object:
                                                   'miles' => miles,
                                                   'tasks_done' => tasks_done})
 
+If your input data is strings but should be converted into numeric, you can call #to_num on it and it will be converted to an array of integers (where possible) or floats:
+
+    donuts = ["6", "0", "2", "4.5", "1.5", "0", "9"]
+    new_data = SimpleTimeSeries.new(:time_vars => {'dates' => dates},
+                                    :data_vars => {'donuts' => donuts.to_num})
+    new_data.current('donuts') #returns [6, 0, 2, 4.5, 1.5, 0, 9]
+
 You can now easily access the value of any data variable for any value of one of your time variables via xxx_on methods created for each of your data_vars (here called 'pizzas_on,' 'miles_on' and 'tasks_done_on'):
 
     puts "Pizzas eaten on Tuesday: #{my_data.pizzas_on('Tuesday')}" # prints 1
