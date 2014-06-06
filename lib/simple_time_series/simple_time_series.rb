@@ -17,7 +17,7 @@ class SimpleTimeSeries
   end
 
   def find_plus_label(what, date, end_date=nil)
-    find(what, date, end_date).unshift(what)
+    find(what, date, end_date).dup.unshift(what)
   end
 
   def data_array(*data_var_names, opts)
@@ -27,6 +27,7 @@ class SimpleTimeSeries
     raise err_msg unless opts
     data_arr = []
     Array(data_var_names).each do |name|
+      puts "Looping through data_var_names inside data_array with #{name}" if DEBUG
       if opts[:start] && opts[:end]
         puts "Calling find(#{name}, #{opts[:start]}, #{opts[:end]}, #{opts})" if DEBUG
         data_arr << find(name, opts[:start], opts[:end], opts)
@@ -38,7 +39,9 @@ class SimpleTimeSeries
   end
 
   def current(what, opts={})
-    send(what.to_sym, opts)
+    puts "#current called with #{what} and #{opts}" if DEBUG
+    vals = send(what.to_sym, opts)
+    opts[:prepend_names] ? vals.dup.unshift(what) : vals
   end
 
   def index_of_date_value(date)
@@ -82,7 +85,7 @@ class SimpleTimeSeries
         time_vars.each do |tv_key, tv_val|
           start_idx = index_of_date_value(first) || 0
           last_idx = index_of_date_value(last) || (first.nil? ? -1 : start_idx)
-          answer = (eval(var).each_cons(2).map { |val1, val2| val2 - val1 }.unshift(nil))[start_idx..last_idx]
+          answer = (eval(var).each_cons(2).map { |val1, val2| val2 - val1 }.dup.unshift(nil))[start_idx..last_idx]
           return answer.length == 1 ? answer[0] : answer
         end
       end
@@ -93,7 +96,7 @@ class SimpleTimeSeries
           start_idx = index_of_date_value(first) || 0
           last_idx = index_of_date_value(last) || (first.nil? ? -1 : start_idx)
           sum = eval(var)[0]
-          answer = (eval(var).each_cons(2).map { |val1, val2| sum += val2 }.unshift(eval(var)[start_idx]))[start_idx..last_idx]
+          answer = (eval(var).each_cons(2).map { |val1, val2| sum += val2 }.dup.unshift(eval(var)[start_idx]))[start_idx..last_idx]
           return answer.length == 1 ? answer[0] : answer
         end
       end
@@ -107,7 +110,7 @@ class SimpleTimeSeries
           puts "start_idx = #{start_idx}; last_idx = #{last_idx}" if DEBUG
           if start_idx != last_idx
             arr = eval(var)[start_idx..last_idx]
-            return (opts[:prepend_names] ? arr.unshift(var) : arr)
+            return (opts[:prepend_names] ? arr.dup.unshift(var) : arr)
           elsif start_idx
             return eval(var)[start_idx]
           else

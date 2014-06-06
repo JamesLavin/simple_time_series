@@ -290,20 +290,21 @@ describe SimpleTimeSeries do
 
     it "builds an array of specified arrays with variable names prepended to each array" do
       @my_data.data_array('tasks_done', {:prepend_names => true}).
-               should == [ @my_data.current('tasks_done').unshift('tasks_done') ]
-      @my_data.data_array('tasks_done', {:prepend_names => true}).
                should == [ ['tasks_done', 2, 3, 0, 14, 3, 11, 0] ]
+      @my_data.data_array('miles', 'tasks_done', {:prepend_names => true}).
+               should == [ ['miles', 2.2, 3.1, 0.0, 4.3, 1.2, 12.2, 2.3],
+                           ['tasks_done', 2, 3, 0, 14, 3, 11, 0] ]
       @my_data.data_array('dates', 'tasks_done', 'pizzas', {:prepend_names => true}).
-               should == [ @my_data.current('dates').unshift('dates'),
-                           @my_data.current('tasks_done').unshift('tasks_done'),
-                           @my_data.current('pizzas').unshift('pizzas') ]
+               should == [ ['dates', '2014-01-01', '2014-01-02', '2014-01-03', '2014-01-04', '2014-01-05', '2014-01-06', '2014-01-07'],
+                           ['tasks_done', 2, 3, 0, 14, 3, 11, 0],
+                           ['pizzas', 0, 0, 1, 0, 0.5, 0, 2] ]
     end
 
     it "builds an array of specified arrays subsetted correctly with variable names prepended to each array" do
-      da = @my_data.data_array('tasks_done', 'pizzas', {:start => 'Monday', :end => 'Friday',
-                                                        :prepend_names => true})
-      da[0].should == ['tasks_done', 3, 0, 14, 3, 11]
-      da[1].should == ['pizzas', 0, 1, 0, 0.5, 0]
+      @my_data.data_array('tasks_done', 'pizzas', {:start => 'Monday', :end => 'Friday',
+                                                   :prepend_names => true}).
+               should == [ ['tasks_done', 3, 0, 14, 3, 11],
+                           ['pizzas', 0, 1, 0, 0.5, 0] ]
                #should == [ ['tasks_done', 3, 0, 14, 3, 11], ['pizzas', 0, 1, 0, 0.5, 0] ]
                #should == [ ['tasks_done', 3, 0, 14, 3, 11], ['pizzas', 0, 1, 0, 0.5, 0] ]
                #should == [ @my_data.find('tasks_done','Tuesday','Thursday'),
