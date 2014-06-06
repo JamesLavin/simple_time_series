@@ -14,7 +14,20 @@ describe SimpleTimeSeries do
                                         'tasks_done' => @tasks_done, 'empty' => []},
                                     :time_vars =>
                                        {'dows' => @dows, 'dates' => @dates,
-                                        'full_dates' => @full_dates})
+                                        'full_dates' => @full_dates},
+                                    :attribs => {'pizzas' => {:full_name => 'Pizzas Eaten', :color => 'red', :position => 2},
+                                                 'miles' => {:full_name => 'Miles Run', :color => 'green', :position => 3},
+                                                 'tasks_done' => {:full_name => 'Tasks Completed', :color => 'yellow', :position => 1}
+                                                } )
+  end
+
+  it "finds values in :attribs" do
+    @my_data.full_name('pizzas').should == 'Pizzas Eaten'
+    @my_data.full_name('miles').should == 'Miles Run'
+    @my_data.color('miles').should == 'green'
+    @my_data.color('tasks_done').should == 'yellow'
+    @my_data.position('pizzas').should == 2
+    @my_data.position('miles').should == 3
   end
 
   it "is creatable" do

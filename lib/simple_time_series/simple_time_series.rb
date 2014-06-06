@@ -2,13 +2,22 @@ class SimpleTimeSeries
   
   DEBUG = false
 
-  attr_accessor :time_vars, :data_vars
+  attr_accessor :time_vars, :data_vars, :attribs
 
   def initialize(opts)
     @time_vars = opts[:time_vars]
     @data_vars = opts[:data_vars]
+    @attribs = opts[:attribs]
     define_data_methods_and_set_values
     define_time_methods_and_set_values
+  end
+
+  def method_missing(meth, *args, &block)
+    begin
+      attribs[args[0]][meth]
+    rescue
+      super
+    end
   end
 
   def find(what, date, end_date=nil, opts={})

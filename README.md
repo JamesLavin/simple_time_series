@@ -42,14 +42,36 @@ This is sufficient to package up your data into a SimpleTimeSeries object:
                                                   'miles' => miles,
                                                   'tasks_done' => tasks_done})
 
-If your input data is strings but should be converted into numeric, you can call #to_num on it and it will be converted to an array of integers (where possible) or floats:
+If a data array contains strings that should be converted to numeric values, you can call #to_num on the data array and its values will be converted to integers (where possible) or floats:
 
     donuts = ["6", "0", "2", "4.5", "1.5", "0", "9"]
     new_data = SimpleTimeSeries.new(:time_vars => {'dates' => dates},
                                     :data_vars => {'donuts' => donuts.to_num})
     new_data.current('donuts') #returns [6, 0, 2, 4.5, 1.5, 0, 9]
 
-You can now easily access the value of any data variable for any value of one of your time variables via xxx_on methods created for each of your data_vars (here called 'pizzas_on,' 'miles_on' and 'tasks_done_on'):
+You can, optionally, pass a hash of :attribs into SimpleTimeSeries.new with additional attributes for each of your time_vars and data_vars. You can call these attributes anything you want and then query their values later. For example, we can associate each data_var with a :full_name, :color, and :position (but you can call your variables almost anything you want):
+
+    my_data = SimpleTimeSeries.new(:time_vars => {'dows' => dows,
+                                                  'dates' => dates,
+                                                  'full_dates' => full_dates},
+                                   :data_vars => {'pizzas' => pizzas,
+                                                  'miles' => miles,
+                                                  'tasks_done' => tasks_done},
+                                   :attribs => {'pizzas' => {:full_name => 'Pizzas Eaten', :color => 'red', :position => 2},
+                                                'miles' => {:full_name => 'Miles Run', :color => 'green', :position => 3},
+                                                'tasks_done' => {:full_name => 'Tasks Completed', :color => 'yellow', :position => 1}
+                                               } )
+
+After doing so, you can then grab these values:
+
+    my_data.full_name('pizzas') # returns 'Pizzas Eaten'
+    my_data.full_name('miles') # returns 'Miles Run'
+    my_data.color('miles') # returns 'green'
+    my_data.color('tasks_done') # returns 'yellow'
+    my_data.position('pizzas') # returns 2
+    my_data.position('miles') # returns 3
+
+You can easily access the value of any data variable for any value of one of your time variables via xxx_on methods created for each of your data_vars (here called 'pizzas_on,' 'miles_on' and 'tasks_done_on'):
 
     puts "Pizzas eaten on Tuesday: #{my_data.pizzas_on('Tuesday')}" # prints 1
     puts "Pizzas eaten on 2014-01-03: #{my_data.pizzas_on('2014-01-03')}" # prints 1
