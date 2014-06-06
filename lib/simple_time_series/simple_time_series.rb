@@ -1,5 +1,7 @@
 class SimpleTimeSeries
   
+  DEBUG = false
+
   attr_accessor :time_vars, :data_vars
 
   def initialize(opts)
@@ -9,12 +11,9 @@ class SimpleTimeSeries
     define_time_methods_and_set_values
   end
 
-  def find(what, date, end_date=nil)
-    if end_date
-      send (what + '_on').to_sym, date, end_date
-    else
-      send (what + '_on').to_sym, date
-    end
+  def find(what, date, end_date=nil, opts={})
+    puts "Calling send(#{what}_on, #{date}, #{end_date}, #{opts})" if DEBUG
+    send((what + '_on').to_sym, date, end_date, opts)
   end
 
   def find_plus_label(what, date, end_date=nil)
@@ -26,19 +25,20 @@ class SimpleTimeSeries
     err_msg += "Example: {:start => 'Tuesday', :end => '2014-01-06'}\n"
     err_msg += "If you want to use all observations, you can pass a blank hash, like {}\n"
     raise err_msg unless opts
-    data_array = []
+    data_arr = []
     Array(data_var_names).each do |name|
       if opts[:start] && opts[:end]
-        data_array << find(name, opts[:start], opts[:end])
+        puts "Calling find(#{name}, #{opts[:start]}, #{opts[:end]}, #{opts})" if DEBUG
+        data_arr << find(name, opts[:start], opts[:end], opts)
       else
-        data_array << current(name)
+        data_arr << current(name, opts)
       end
     end
-    data_array
+    data_arr
   end
 
-  def current(what)
-    send what.to_sym
+  def current(what, opts={})
+    send(what.to_sym, opts)
   end
 
   def index_of_date_value(date)
@@ -62,7 +62,6 @@ class SimpleTimeSeries
 
   def new_data_var(var, vals)
     define_getter_and_setter(var)
-    var_on = "#{var}_on"
     self.class.class_eval do
       define_method("#{var}_subset") do |first, last=first|
         start_idx = index_of_date_value(first)
@@ -98,26 +97,27 @@ class SimpleTimeSeries
           return answer.length == 1 ? answer[0] : answer
         end
       end
-      define_method(var_on) do |first, last=nil|
+      define_method("#{var}_on") do |first, last=nil, opts={}|
         time_vars.each do |tv_key, tv_val|
           # tv_key is something like 'dows' or 'dates'
           # tv_val is an array of associated values
           start_idx = index_of_date_value(first) || 0
           last_idx = index_of_date_value(last) || (first.nil? ? -1 : start_idx)
-          if start_idx != last_idx #&& tv_val.include?(last)
-            return eval(var)[start_idx..last_idx]
-          elsif tv_val.include?(first)
+          puts "Called with #{first}, #{last}, #{opts}" if DEBUG
+          puts "start_idx = #{start_idx}; last_idx = #{last_idx}" if DEBUG
+          if start_idx != last_idx
+            arr = eval(var)[start_idx..last_idx]
+            return (opts[:prepend_names] ? arr.unshift(var) : arr)
+          elsif start_idx
             return eval(var)[start_idx]
+          else
+            raise "Can't find #{var}_on for #{first}"
           end
         end
-        raise "Can't find #{var_on} for #{first}"
       end
     end
     instance_variable_set("@#{var}", vals) if vals
     data_vars[var] = vals unless data_vars.has_key?(var)
-    #def eval(var).[] (first, last)
-    #  send "#{var}_subset".to_sym, first, last
-    #end
   end
 
   private
@@ -137,7 +137,9 @@ class SimpleTimeSeries
   def define_getter_and_setter(var)
     ivar = "@#{var}"
     self.class.class_eval do
-      define_method(var) { instance_variable_get ivar }
+      define_method(var) do |opts={}|
+        instance_variable_get ivar
+      end
       define_method "#{var}=" do |val|
         instance_variable_set ivar, val
       end
