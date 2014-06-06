@@ -313,14 +313,21 @@ describe SimpleTimeSeries do
                            ['pizzas', 0, 1, 0, 0.5, 0, 2] ]
     end
 
-    #it "builds an array of specified arrays with variable names prepended to each array" do
-    #  @my_data.data_array('tasks_done', {}).should == [ @my_data.current('tasks_done') ]
-    #  @my_data.data_array('tasks_done', 'pizzas', {:prepend_names => true}).should == [ @my_data.current('tasks_done'),
-    #                                                              @my_data.current('pizzas') ]
-    #  @my_data.data_array('tasks_done', 'pizzas', {:start => 'Tuesday', :end => 'Thursday'}).
-    #          should == [ @my_data.find('tasks_done','Tuesday','Thursday'),
-    #                      @my_data.find('pizzas', '2014-01-03', 'Jan 5, 2014') ]
-    #end
+    it "sums a set of data_vars across time observations" do
+      @my_data.sum_by_date('pizzas','miles','tasks_done', {}).should ==
+        [0 + 2.2 + 2, 0 + 3.1 + 3, 1 + 0.0 + 0, 0 + 4.3 + 14, 0.5 + 1.2 + 3, 0 + 12.2 + 11, 2 + 2.3 + 0]
+    end
+
+    it "sums a set of data_vars across time observations for a subset of time values" do
+      @my_data.sum_by_date('pizzas','miles','tasks_done', {:start => 'Monday', :end => 'Saturday'}).should ==
+        [0 + 3.1 + 3, 1 + 0.0 + 0, 0 + 4.3 + 14, 0.5 + 1.2 + 3, 0 + 12.2 + 11, 2 + 2.3 + 0]
+
+      @my_data.sum_by_date('pizzas','miles','tasks_done', {:start => '2014-01-01', :end => 'Jan 7, 2014'}).should ==
+        [0 + 2.2 + 2, 0 + 3.1 + 3, 1 + 0.0 + 0, 0 + 4.3 + 14, 0.5 + 1.2 + 3, 0 + 12.2 + 11, 2 + 2.3 + 0]
+
+      @my_data.sum_by_date('pizzas','miles','tasks_done', {:start => '2014-01-03', :end => 'Jan 6, 2014'}).should ==
+        [1 + 0.0 + 0, 0 + 4.3 + 14, 0.5 + 1.2 + 3, 0 + 12.2 + 11]
+    end
 
   end
 

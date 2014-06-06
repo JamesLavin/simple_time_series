@@ -201,6 +201,24 @@ It also calculates cumulative sums for any data_var:
     my_data.tasks_done_cumsum('Sunday','Monday') # returns [2, 5]
     my_data.tasks_done_cumsum('Tuesday','Saturday') # returns [5, 19, 22, 33, 33]
 
+You can sum data_vars across time observations for all time values or a subset of time values:
+
+      my_data.sum_by_date('pizzas','miles','tasks_done', {})
+        =>
+        [0 + 2.2 + 2, 0 + 3.1 + 3, 1 + 0.0 + 0, 0 + 4.3 + 14, 0.5 + 1.2 + 3, 0 + 12.2 + 11, 2 + 2.3 + 0]
+
+      my_data.sum_by_date('pizzas','miles','tasks_done', {:start => 'Monday', :end => 'Saturday'})
+        =>
+        [0 + 3.1 + 3, 1 + 0.0 + 0, 0 + 4.3 + 14, 0.5 + 1.2 + 3, 0 + 12.2 + 11, 2 + 2.3 + 0]
+
+      my_data.sum_by_date('pizzas','miles','tasks_done', {:start => '2014-01-01', :end => 'Jan 7, 2014'})
+        =>
+        [0 + 2.2 + 2, 0 + 3.1 + 3, 1 + 0.0 + 0, 0 + 4.3 + 14, 0.5 + 1.2 + 3, 0 + 12.2 + 11, 2 + 2.3 + 0]
+
+      my_data.sum_by_date('pizzas','miles','tasks_done', {:start => '2014-01-03', :end => 'Jan 6, 2014'})
+        =>
+        [1 + 0.0 + 0, 0 + 4.3 + 14, 0.5 + 1.2 + 3, 0 + 12.2 + 11]
+
 You can extract subsets of your data into arrays of arrays with #data_array:
 
       my_data.data_array('tasks_done', {})

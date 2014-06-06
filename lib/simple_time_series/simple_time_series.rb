@@ -20,6 +20,18 @@ class SimpleTimeSeries
     find(what, date, end_date).dup.unshift(what)
   end
 
+  def sum_by_date(*data_var_names, opts)
+    arr = []
+    data_var_names.each do |name|
+      if opts[:start] && opts[:end]
+        arr << find(name, opts[:start], opts[:end], opts)
+      else
+        arr << current(name, opts)
+      end
+    end
+    arr.transpose.map { |arr| arr.reduce(:+) }
+  end
+
   def data_array(*data_var_names, opts)
     err_msg = "The last parameter passed to #data_array must be a hash of start/end values.\n"
     err_msg += "Example: {:start => 'Tuesday', :end => '2014-01-06'}\n"
