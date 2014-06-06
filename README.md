@@ -247,7 +247,7 @@ You can extract subsets of your data into arrays of arrays with #data_array:
           [2, 3, 0, 14, 3, 11, 0],
           [0, 0, 1, 0, 0.5, 0, 2] ]
 
-You can tell it to prepend the variable name to each array:
+You can tell it to prepend each variable's name to its array:
 
       my_data.data_array('tasks_done', {:prepend_names => true})
         =>
@@ -307,6 +307,23 @@ You can tell it to prepend the variable name to each array:
         [ ['dates', '2014-01-02', '2014-01-03', '2014-01-04', '2014-01-05', '2014-01-06', '2014-01-07'],
           ['tasks_done', 3, 0, 14, 3, 11, 0],
           ['pizzas', 0, 1, 0, 0.5, 0, 2] ]
+
+You can also pass an array of custom names to prepend to each data_var array:
+
+    my_data.data_array('tasks_done', {:prepend_names => ['Tasks Completed']})
+      =>
+      [ ['Tasks Completed', 2, 3, 0, 14, 3, 11, 0] ]
+
+    my_data.data_array('miles', 'tasks_done', {:prepend_names => ['Miles Run', 'Tasks Completed']})
+      =>
+      [ ['Miles Run', 2.2, 3.1, 0.0, 4.3, 1.2, 12.2, 2.3],
+        ['Tasks Completed', 2, 3, 0, 14, 3, 11, 0] ]
+
+    my_data.data_array('dates', 'tasks_done', 'pizzas', {:prepend_names => ['YYYY-MM-DD', 'Tasks Completed', 'Pizzas Consumed']})
+      =>
+      [ ['YYYY-MM-DD', '2014-01-01', '2014-01-02', '2014-01-03', '2014-01-04', '2014-01-05', '2014-01-06', '2014-01-07'],
+        ['Tasks Completed', 2, 3, 0, 14, 3, 11, 0],
+        ['Pizzas Consumed', 0, 0, 1, 0, 0.5, 0, 2] ]
 
 Currently, SimpleTimeSeries assumes all variable arrays have equal lengths and represent the same sequence of observations. Though the gem says "time series," it should work with any kind of sequential data.
 
