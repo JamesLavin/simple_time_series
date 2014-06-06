@@ -305,10 +305,12 @@ describe SimpleTimeSeries do
                                                    :prepend_names => true}).
                should == [ ['tasks_done', 3, 0, 14, 3, 11],
                            ['pizzas', 0, 1, 0, 0.5, 0] ]
-               #should == [ ['tasks_done', 3, 0, 14, 3, 11], ['pizzas', 0, 1, 0, 0.5, 0] ]
-               #should == [ ['tasks_done', 3, 0, 14, 3, 11], ['pizzas', 0, 1, 0, 0.5, 0] ]
-               #should == [ @my_data.find('tasks_done','Tuesday','Thursday'),
-               #            @my_data.find('pizzas', '2014-01-03', 'Jan 5, 2014') ]
+      @my_data.data_array('dates', 'tasks_done', 'pizzas', {:prepend_names => true,
+                                                            :start => '2014-01-02',
+                                                            :end => 'Saturday'}).
+               should == [ ['dates', '2014-01-02', '2014-01-03', '2014-01-04', '2014-01-05', '2014-01-06', '2014-01-07'],
+                           ['tasks_done', 3, 0, 14, 3, 11, 0],
+                           ['pizzas', 0, 1, 0, 0.5, 0, 2] ]
     end
 
     #it "builds an array of specified arrays with variable names prepended to each array" do

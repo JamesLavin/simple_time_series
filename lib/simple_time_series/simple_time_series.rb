@@ -61,6 +61,7 @@ class SimpleTimeSeries
     define_getter_and_setter(var)
     instance_variable_set("@#{var}", vals) if vals
     time_vars[var] = vals unless time_vars.has_key?(var)
+    define_var_on(var)
   end
 
   def new_data_var(var, vals)
@@ -100,6 +101,16 @@ class SimpleTimeSeries
           return answer.length == 1 ? answer[0] : answer
         end
       end
+    end
+    define_var_on(var)
+    instance_variable_set("@#{var}", vals) if vals
+    data_vars[var] = vals unless data_vars.has_key?(var)
+  end
+
+  private
+
+  def define_var_on(var)
+    self.class.class_eval do
       define_method("#{var}_on") do |first, last=nil, opts={}|
         time_vars.each do |tv_key, tv_val|
           # tv_key is something like 'dows' or 'dates'
@@ -119,11 +130,7 @@ class SimpleTimeSeries
         end
       end
     end
-    instance_variable_set("@#{var}", vals) if vals
-    data_vars[var] = vals unless data_vars.has_key?(var)
   end
-
-  private
 
   def define_time_methods_and_set_values
     time_vars.each do |var, vals|
