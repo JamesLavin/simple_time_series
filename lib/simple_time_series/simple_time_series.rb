@@ -30,7 +30,7 @@ class SimpleTimeSeries
       end
     end
     arr = arr.transpose.map { |arr| arr.reduce(:+) }
-    opts[:prepend_name] ? arr.unshift(opts[:prepend_name]) : arr
+    opts[:prepend_name] ? arr.dup.unshift(opts[:prepend_name]) : arr
   end
 
   def data_array(*data_var_names, opts)
@@ -41,11 +41,15 @@ class SimpleTimeSeries
     data_arr = []
     Array(data_var_names).each do |name|
       puts "Looping through data_var_names inside data_array with #{name}" if DEBUG
-      if opts[:start] && opts[:end]
-        puts "Calling find(#{name}, #{opts[:start]}, #{opts[:end]}, #{opts})" if DEBUG
-        data_arr << find(name, opts[:start], opts[:end], opts)
+      puts "Calling find(#{name}, #{opts[:start]}, #{opts[:end]}, #{opts})" if DEBUG
+      data_arr << find(name, opts[:start], opts[:end], opts)
+    end
+
+    if opts[:prepend_names]
+      if opts[:prepend_names].is_a? Array
+        data_arr = data_arr.each_with_index.map { |var, idx| var.dup.unshift(opts[:prepend_names][idx]) }
       else
-        data_arr << current(name, opts)
+        data_arr = data_arr.each_with_index.map { |var, idx| var.dup.unshift(data_var_names[idx]) }
       end
     end
     data_arr
@@ -53,8 +57,7 @@ class SimpleTimeSeries
 
   def current(what, opts={})
     puts "#current called with #{what} and #{opts}" if DEBUG
-    vals = send(what.to_sym, opts)
-    opts[:prepend_names] ? vals.dup.unshift(what) : vals
+    send(what.to_sym, opts)
   end
 
   def index_of_date_value(date)
@@ -133,8 +136,7 @@ class SimpleTimeSeries
           puts "Called with #{first}, #{last}, #{opts}" if DEBUG
           puts "start_idx = #{start_idx}; last_idx = #{last_idx}" if DEBUG
           if start_idx != last_idx
-            arr = eval(var)[start_idx..last_idx]
-            return (opts[:prepend_names] ? arr.dup.unshift(var) : arr)
+            return eval(var)[start_idx..last_idx]
           elsif start_idx
             return eval(var)[start_idx]
           else

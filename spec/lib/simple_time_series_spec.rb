@@ -300,6 +300,18 @@ describe SimpleTimeSeries do
                            ['pizzas', 0, 0, 1, 0, 0.5, 0, 2] ]
     end
 
+    it "builds an array of specified arrays with custom variable names prepended to each array" do
+      @my_data.data_array('tasks_done', {:prepend_names => ['Tasks Completed']}).
+               should == [ ['Tasks Completed', 2, 3, 0, 14, 3, 11, 0] ]
+      @my_data.data_array('miles', 'tasks_done', {:prepend_names => ['Miles Run', 'Tasks Completed']}).
+               should == [ ['Miles Run', 2.2, 3.1, 0.0, 4.3, 1.2, 12.2, 2.3],
+                           ['Tasks Completed', 2, 3, 0, 14, 3, 11, 0] ]
+      @my_data.data_array('dates', 'tasks_done', 'pizzas', {:prepend_names => ['YYYY-MM-DD', 'Tasks Completed', 'Pizzas Consumed']}).
+               should == [ ['YYYY-MM-DD', '2014-01-01', '2014-01-02', '2014-01-03', '2014-01-04', '2014-01-05', '2014-01-06', '2014-01-07'],
+                           ['Tasks Completed', 2, 3, 0, 14, 3, 11, 0],
+                           ['Pizzas Consumed', 0, 0, 1, 0, 0.5, 0, 2] ]
+    end
+
     it "builds an array of specified arrays subsetted correctly with variable names prepended to each array" do
       @my_data.data_array('tasks_done', 'pizzas', {:start => 'Monday', :end => 'Friday',
                                                    :prepend_names => true}).
