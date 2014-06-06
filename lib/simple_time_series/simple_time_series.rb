@@ -29,7 +29,8 @@ class SimpleTimeSeries
         arr << current(name, opts)
       end
     end
-    arr.transpose.map { |arr| arr.reduce(:+) }
+    arr = arr.transpose.map { |arr| arr.reduce(:+) }
+    opts[:prepend_name] ? arr.unshift(opts[:prepend_name]) : arr
   end
 
   def data_array(*data_var_names, opts)

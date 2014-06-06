@@ -329,6 +329,20 @@ describe SimpleTimeSeries do
         [1 + 0.0 + 0, 0 + 4.3 + 14, 0.5 + 1.2 + 3, 0 + 12.2 + 11]
     end
 
+    it "sums a set of data_vars across time observations for a subset of time values and lets you specify the name of the new data row" do
+      @my_data.sum_by_date('pizzas','miles','tasks_done', {:start => 'Monday', :end => 'Saturday',
+                                                           :prepend_name => 'total'}).should ==
+        ['total', 0 + 3.1 + 3, 1 + 0.0 + 0, 0 + 4.3 + 14, 0.5 + 1.2 + 3, 0 + 12.2 + 11, 2 + 2.3 + 0]
+
+      @my_data.sum_by_date('pizzas','miles','tasks_done', {:start => '2014-01-01', :end => 'Jan 7, 2014',
+                                                           :prepend_name => 'all the things!'}).should ==
+        ['all the things!', 0 + 2.2 + 2, 0 + 3.1 + 3, 1 + 0.0 + 0, 0 + 4.3 + 14, 0.5 + 1.2 + 3, 0 + 12.2 + 11, 2 + 2.3 + 0]
+
+      @my_data.sum_by_date('pizzas','miles','tasks_done', {:start => '2014-01-03', :end => 'Jan 6, 2014',
+                                                           :prepend_name => "Jeff's fancy pants data variable"}).should ==
+        ["Jeff's fancy pants data variable", 1 + 0.0 + 0, 0 + 4.3 + 14, 0.5 + 1.2 + 3, 0 + 12.2 + 11]
+    end
+
   end
 
 end
