@@ -201,6 +201,78 @@ It also calculates cumulative sums for any data_var:
     my_data.tasks_done_cumsum('Sunday','Monday') # returns [2, 5]
     my_data.tasks_done_cumsum('Tuesday','Saturday') # returns [5, 19, 22, 33, 33]
 
+You can extract subsets of your data into arrays of arrays with #data_array:
+
+      my_data.data_array('tasks_done', {})
+        => [ [2, 3, 0, 14, 3, 11, 0] ]
+
+      my_data.data_array('dates', 'tasks_done', 'pizzas', {})
+        =>
+        [ ['2014-01-01', '2014-01-02', '2014-01-03', '2014-01-04', '2014-01-05', '2014-01-06', '2014-01-07'],
+          [2, 3, 0, 14, 3, 11, 0],
+          [0, 0, 1, 0, 0.5, 0, 2] ]
+
+You can tell it to prepend the variable name to each array:
+
+      my_data.data_array('tasks_done', {:prepend_names => true})
+        =>
+        [ ['tasks_done', 2, 3, 0, 14, 3, 11, 0] ]
+
+      my_data.data_array('miles', 'tasks_done', {:prepend_names => true})
+        =>
+        [ ['miles', 2.2, 3.1, 0.0, 4.3, 1.2, 12.2, 2.3],
+          ['tasks_done', 2, 3, 0, 14, 3, 11, 0] ]
+
+      my_data.data_array('dates', 'tasks_done', 'pizzas', {:prepend_names => true})
+        =>
+        [ ['dates', '2014-01-01', '2014-01-02', '2014-01-03', '2014-01-04', '2014-01-05', '2014-01-06', '2014-01-07'],
+          ['tasks_done', 2, 3, 0, 14, 3, 11, 0],
+          ['pizzas', 0, 0, 1, 0, 0.5, 0, 2] ]
+
+      my_data.data_array('tasks_done', 'pizzas', {:start => 'Monday',
+                                                  :end => 'Friday',
+                                                  :prepend_names => true})
+        =>
+        [ ['tasks_done', 3, 0, 14, 3, 11],
+          ['pizzas', 0, 1, 0, 0.5, 0] ]
+
+      my_data.data_array('dates', 'tasks_done', 'pizzas', {:prepend_names => true,
+                                                           :start => '2014-01-02',
+                                                           :end => 'Saturday'})
+        =>
+        [ ['dates', '2014-01-02', '2014-01-03', '2014-01-04', '2014-01-05', '2014-01-06', '2014-01-07'],
+          ['tasks_done', 3, 0, 14, 3, 11, 0],
+          ['pizzas', 0, 1, 0, 0.5, 0, 2] ]
+
+      my_data.data_array('tasks_done', {:prepend_names => true})
+        =>
+        [ ['tasks_done', 2, 3, 0, 14, 3, 11, 0] ]
+
+      my_data.data_array('miles', 'tasks_done', {:prepend_names => true})
+        =>
+        [ ['miles', 2.2, 3.1, 0.0, 4.3, 1.2, 12.2, 2.3],
+          ['tasks_done', 2, 3, 0, 14, 3, 11, 0] ]
+
+      my_data.data_array('dates', 'tasks_done', 'pizzas', {:prepend_names => true})
+        =>
+        [ ['dates', '2014-01-01', '2014-01-02', '2014-01-03', '2014-01-04', '2014-01-05', '2014-01-06', '2014-01-07'],
+          ['tasks_done', 2, 3, 0, 14, 3, 11, 0],
+          ['pizzas', 0, 0, 1, 0, 0.5, 0, 2] ]
+
+      my_data.data_array('tasks_done', 'pizzas', {:start => 'Monday', :end => 'Friday',
+                                                   :prepend_names => true}).
+        =>
+        [ ['tasks_done', 3, 0, 14, 3, 11],
+          ['pizzas', 0, 1, 0, 0.5, 0] ]
+
+      my_data.data_array('dates', 'tasks_done', 'pizzas', {:prepend_names => true,
+                                                            :start => '2014-01-02',
+                                                            :end => 'Saturday'})
+        =>
+        [ ['dates', '2014-01-02', '2014-01-03', '2014-01-04', '2014-01-05', '2014-01-06', '2014-01-07'],
+          ['tasks_done', 3, 0, 14, 3, 11, 0],
+          ['pizzas', 0, 1, 0, 0.5, 0, 2] ]
+
 Currently, SimpleTimeSeries assumes all variable arrays have equal lengths and represent the same sequence of observations. Though the gem says "time series," it should work with any kind of sequential data.
 
 ## Disclaimer

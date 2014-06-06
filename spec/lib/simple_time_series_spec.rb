@@ -279,10 +279,10 @@ describe SimpleTimeSeries do
     it "builds an array of specified arrays" do
       @my_data.data_array('tasks_done', {}).should == [ @my_data.current('tasks_done') ]
       @my_data.data_array('tasks_done', {}).should == [ [2, 3, 0, 14, 3, 11, 0] ]
-      @my_data.data_array('dates', 'tasks_done', 'pizzas', {}).
-               should == [ @my_data.current('dates'),
-                           @my_data.current('tasks_done'),
-                           @my_data.current('pizzas') ]
+      @my_data.data_array('dates', 'tasks_done', 'pizzas', {}).should ==
+        [ ['2014-01-01', '2014-01-02', '2014-01-03', '2014-01-04', '2014-01-05', '2014-01-06', '2014-01-07'],
+          [2, 3, 0, 14, 3, 11, 0],
+          [0, 0, 1, 0, 0.5, 0, 2] ]
       @my_data.data_array('tasks_done', 'pizzas', {:start => 'Tuesday', :end => 'Thursday'}).
                should == [ @my_data.find('tasks_done','Tuesday','Thursday'),
                            @my_data.find('pizzas', '2014-01-03', 'Jan 5, 2014') ]
